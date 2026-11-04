@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: shopdb
+      POSTGRES_USER: shop
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?run setup.ps1 first}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U shop -d shopdb"]
+      interval: 5s
+      retries: 20
+      start_period: 10s
+  api:
+    profiles: ["api"]
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/shopdb
+      DB_USERNAME: shop
+      DB_PASSWORD: ${DB_PASSWORD:?run setup.ps1 first}
+      JWT_SECRET: ${JWT_SECRET:?run setup.ps1 first}
+    depends_on:
+      postgres:
+        condition: service_healthy
+volumes:
+  postgres_data:

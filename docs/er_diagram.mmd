@@ -1,0 +1,28 @@
+erDiagram
+  users ||--o{ addresses : has
+  users ||--o{ carts : has
+  users ||--o{ wishlists : has
+  users ||--o{ reviews : has
+  users ||--o{ shop_orders : has
+  users ||--o{ promo_code_usages : has
+  users ||--o{ refresh_tokens : has
+  categories ||--o{ products : has
+  categories ||--o{ categories : has
+  brands ||--o{ products : has
+  products ||--o{ product_variants : has
+  products ||--o{ product_images : has
+  products ||--o{ product_specifications : has
+  products ||--o{ reviews : has
+  products ||--o{ cart_items : has
+  products ||--o{ wishlists : has
+  products ||--o{ order_items : has
+  product_variants ||--o{ cart_items : has
+  product_variants ||--o{ order_items : has
+  carts ||--o{ cart_items : has
+  shop_orders ||--o{ order_items : has
+  shop_orders ||--o{ payments : has
+  shop_orders ||--o{ promo_code_usages : has
+  promo_codes ||--o{ promo_code_usages : has
+
+  promo_codes }o--o{ categories : applicable
+  promo_codes }o--o{ products : applicable
